@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend # Chemin vers le dossier de ton projet Spring Boot
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - h2-data:/app/data # Pour persister les données de H2 si tu l'utilises en mode fichier
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/app/data/mydb # Exemple de configuration de l'URL H2
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend # Chemin vers le dossier de ton projet Vite
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+volumes:
+  h2-data:
+    # Ce volume évite de perdre tes données H2 au redémarrage du conteneur
+
+networks:
+  app-network:
+    driver: bridge
