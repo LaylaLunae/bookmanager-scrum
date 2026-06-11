@@ -1,0 +1,2 @@
+INSERT INTO users (username, email, password, role) VALUES ('AdminJohn', 'admin@bookmanager.com', 'admin123', 'admin');
+INSERT INTO users (username, email, password, role) VALUES ('UserJane', 'client@bookmanager.com', 'client123', 'client');
