@@ -1,122 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect } from 'react';
+import api from './api/axiosInstance'; // Ajuste le chemin vers ton dossier api si besoin
 
 function App() {
-  const [count, setCount] = useState(0)
+  useEffect(() => {
+    // Fonction asynchrone pour tester l'appel API
+    const testBackendConnection = async () => {
+      console.log("⏳ Tentative de connexion au backend...");
+      try {
+        // On envoie exactement le JSON attendu par le contrat de ta collègue
+        const response = await api.post('/auth/login', {
+          email: 'test@test.com',
+          password: 'password123'
+        });
+
+        console.log("✅ SUCCÈS ! Le backend a répondu :", response.data);
+      } catch (error: any) {
+        console.error("❌ ERREUR lors de l'appel API :");
+        if (error.response) {
+          // Le serveur a répondu avec un code d'erreur (ex: 400, 401, 500)
+          console.error("Statut HTTP :", error.response.status);
+          console.error("Détails du serveur :", error.response.data);
+        } else if (error.request) {
+          // La requête a été envoyée mais aucune réponse n'a été reçue (ex: backend éteint)
+          console.error("Aucune réponse du serveur. Le backend est-il lancé ?");
+        } else {
+          console.error("Erreur de configuration :", error.message);
+        }
+      }
+    };
+
+    testBackendConnection();
+  }, []);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+    <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
+      <h1>Vérification de l'architecture & d'Axios</h1>
+      <p>Ouvre la console de ton navigateur (F12 - Onglet Console) pour voir le résultat du test.</p>
+    </div>
+  );
 }
 
-export default App
+export default App;
