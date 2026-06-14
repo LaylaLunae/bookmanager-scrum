@@ -1,0 +1,72 @@
+.dashboard-container {
+    min-height: 100vh;
+    background-color: #121214;
+    color: #e1e1e6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-content {
+    display: flex;
+    flex: 1;
+}
+
+.main-panel {
+    flex: 2;
+    padding: 2rem;
+    border-right: 1px solid #29292e;
+    /* Fine séparation grise */
+    background-color: #121214;
+}
+
+.main-panel.full-width {
+    flex: 3;
+    border-right: none;
+}
+
+.side-panel {
+    flex: 1;
+    padding: 2rem;
+    background-color: #202024;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-bar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.filter-button {
+    background-color: #202024;
+    border: 1px solid #29292e;
+    color: #a8a8b3;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-button:hover {
+    color: #ffffff;
+    border-color: #4f46e5;
+}
+
+.filter-button.active {
+    background-color: #4f46e5;
+    color: #ffffff;
+    border-color: #4f46e5;
+}
+
+.placeholder-box {
+    border: 2px dashed #29292e;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    color: #7c7c8a;
+    margin-top: 1rem;
+    background-color: rgba(32, 32, 36, 0.3);
+}
