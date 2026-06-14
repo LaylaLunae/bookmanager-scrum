@@ -43,8 +43,14 @@ function Subscription() {
 
             navigate('/');
 
-        } catch (error) {
+        } catch (error: any) {
             console.error("Le backend a renvoyé une erreur :", error);
+            if (error.response && error.response.data) {
+                setErrorMessage("Ce nom d'utilisateur ou cet e-mail est déjà utilisé !");
+            }
+            else {
+                setErrorMessage("Impossible de joindre le serveur. Réessayez plus tard.");
+            }
         }
     };
 
