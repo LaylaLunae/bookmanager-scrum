@@ -30,7 +30,7 @@ export function InputField({ label, type, value, onChange }: InputFieldProps) {
 export function InputFieldCheckbox({ label, type, value, onChange }: InputFieldCheckboxProps) {
     return (
         <div>
-            <label>{label} :</label>
+            <label>{label}</label>
             <input
                 type={type}
                 checked={value}
