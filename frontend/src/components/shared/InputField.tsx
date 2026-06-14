@@ -4,7 +4,8 @@ interface InputFieldProps {
     label: string;
     type: string;
     value: string;
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    required?: boolean;
 }
 
 interface InputFieldCheckboxProps {
@@ -14,10 +15,12 @@ interface InputFieldCheckboxProps {
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export function InputField({ label, type, value, onChange }: InputFieldProps) {
+export function InputField({ label, type, value, onChange, required }: InputFieldProps) {
     return (
         <div>
-            <label>{label} :</label>
+            <label className={required ? "required-label" : ""}>
+                {label}
+            </label>
             <input
                 type={type}
                 value={value}
