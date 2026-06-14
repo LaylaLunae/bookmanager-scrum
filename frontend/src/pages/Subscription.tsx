@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { InputField, InputFieldCheckbox } from '../components/shared/InputField.tsx';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 function Subscription() {
@@ -56,7 +56,7 @@ function Subscription() {
 
     return (
         <div>
-            <h2> Inscription </h2>
+            <h1> Inscription </h1>
 
             <form onSubmit={handleSubmit}>
                 <div>
@@ -94,6 +94,10 @@ function Subscription() {
                 {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
 
                 <button type="submit"> S'inscrire </button>
+
+                <p>
+                    <Link to="/connexion"> Déjà un compte ? Connectez-vous </Link>
+                </p>
             </form>
 
         </div>
