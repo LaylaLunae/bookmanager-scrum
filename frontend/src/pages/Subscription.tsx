@@ -21,6 +21,11 @@ function Subscription() {
         const roleText = isAdmin ? 'admin' : 'client';
         setErrorMessage('');
 
+        if (!username.trim() || !mail.trim() || !password.trim() || !confirmPassword.trim()) {
+            setErrorMessage("Veuillez remplir tous les champs obligatoires !");
+            return;
+        }
+
         if (password !== confirmPassword) {
             setErrorMessage("Les mots de passe ne correspondent pas !");
             return;
@@ -57,6 +62,7 @@ function Subscription() {
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
+                            required
                         />
                     </div>
                     <div className="auth-form-group">
@@ -65,6 +71,7 @@ function Subscription() {
                             type="email"
                             value={mail}
                             onChange={(e) => setMail(e.target.value)}
+                            required
                         />
                     </div>
                     <div className="auth-form-group">
@@ -73,6 +80,7 @@ function Subscription() {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            required
                         />
                     </div>
                     <div className="auth-form-group">
@@ -81,6 +89,7 @@ function Subscription() {
                             type="password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
                         />
                     </div>
 

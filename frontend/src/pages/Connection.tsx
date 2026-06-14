@@ -17,6 +17,11 @@ function Connection() {
         e.preventDefault();
         setErrorMessage('');
 
+        if (!email.trim() || !password.trim()) {
+            setErrorMessage("Veuillez remplir tous les champs !");
+            return;
+        }
+
         try {
             const response = await axios.post('http://localhost:8080/api/auth/login', {
                 email: email,
