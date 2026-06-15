@@ -1,0 +1,137 @@
+.add-book-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: #e1e1e6;
+}
+
+.add-book-form-container h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+    color: #ffffff;
+}
+
+/* Le conteneur prend toute la hauteur disponible du panel latéral sans déborder */
+.add-book-form-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: calc(100vh - 120px);
+    /* Ajuste selon la hauteur de ta navbar globale */
+    color: #e1e1e6;
+    overflow: hidden;
+    /* Empêche le conteneur global de scroller */
+}
+
+/* En-tête figé en haut */
+.form-fixed-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #29292e;
+    margin-bottom: 1rem;
+}
+
+.form-fixed-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #ffffff;
+}
+
+.form-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Partie inférieure qui prend le reste de la place et gère son propre scroll */
+.form-scrollable-body {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-right: 0.5rem;
+    /* Espace pour ne pas coller à la scrollbar */
+}
+
+/* Personnalisation de la scrollbar interne pour qu'elle soit discrète */
+.form-scrollable-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.form-scrollable-body::-webkit-scrollbar-thumb {
+    background-color: #29292e;
+    border-radius: 4px;
+}
+
+/* Styles des champs */
+.auth-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.auth-form-group label {
+    font-size: 0.85rem;
+    color: #a8a8b3;
+}
+
+.auth-form-group input,
+.auth-form-group textarea {
+    background-color: #121214;
+    border: 1px solid #29292e;
+    border-radius: 4px;
+    padding: 0.65rem;
+    color: #e1e1e6;
+    font-family: inherit;
+    font-size: 0.9rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.auth-form-group input:focus,
+.auth-form-group textarea:focus {
+    outline: none;
+    border-color: #4f46e5;
+}
+
+.file-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.file-upload-button {
+    background-color: #202024;
+    border: 1px solid #29292e;
+    color: #a8a8b3;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.file-upload-button:hover {
+    color: #ffffff;
+    border-color: #4f46e5;
+}
+
+.file-name-indicator {
+    font-size: 0.85rem;
+    color: #7c7c8a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.auth-error-message {
+    background-color: rgba(247, 90, 104, 0.1);
+    border: 1px solid #f75a68;
+    color: #f75a68;
+    padding: 0.75rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    margin: 0;
+}

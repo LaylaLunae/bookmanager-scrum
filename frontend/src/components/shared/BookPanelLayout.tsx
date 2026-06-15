@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import type { Book } from "../../types/Book";
 import { BookGrid } from "./BookGrid";
@@ -12,6 +12,7 @@ interface BookPanelLayoutProps {
     renderCardExtra?: (book: Book) => ReactNode;
     renderViewActions?: (book: Book) => ReactNode;
     children?: ReactNode;
+    adminSidebarContent?: ReactNode;
 }
 
 export function BookPanelLayout({
@@ -20,10 +21,17 @@ export function BookPanelLayout({
     books,
     renderCardExtra,
     renderViewActions,
-    children
+    children,
+    adminSidebarContent
 }: BookPanelLayoutProps) {
 
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+
+    useEffect(() => {
+        if (adminSidebarContent) {
+            setSelectedBook(null);
+        }
+    }, [adminSidebarContent]);
 
     return (
         <div className="catalogue-layout">
@@ -42,13 +50,19 @@ export function BookPanelLayout({
                 />
             </div>
 
-            {selectedBook && (
+            {(adminSidebarContent || selectedBook) && (
                 <div className="catalogue-sidebar">
-                    <BookView
-                        book={selectedBook}
-                        onClose={() => setSelectedBook(null)}
-                        actions={renderViewActions ? renderViewActions(selectedBook) : undefined}
-                    />
+                    {adminSidebarContent ? (
+                        adminSidebarContent
+                    ) : (
+                        selectedBook && (
+                            <BookView
+                                book={selectedBook}
+                                onClose={() => setSelectedBook(null)}
+                                actions={renderViewActions ? renderViewActions(selectedBook) : undefined}
+                            />
+                        )
+                    )}
                 </div>
             )}
 

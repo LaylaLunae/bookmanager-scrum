@@ -9,7 +9,6 @@ export function CataloguePanel() {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Chargement des données au montage du composant
     useEffect(() => {
         getAllBooks()
             .then((response) => {
@@ -48,7 +47,7 @@ export function CataloguePanel() {
         return (
             <div className="catalogue-layout">
                 <div className="catalogue-main">
-                    <h2>Catalogue Global</h2>
+                    <h2>Catalogue</h2>
                     <p style={{ color: '#f75a68' }}>{error}</p>
                 </div>
             </div>

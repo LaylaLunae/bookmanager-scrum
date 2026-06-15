@@ -6,7 +6,7 @@ export const getAllBooks = () => {
     return api.get<Book[]>('/books');
 };
 
-// Ajouter un livre (Admin)
+// Créer un livre (Admin)
 export const createBook = (bookData: Omit<Book, 'id'>) => {
     return api.post<Book>('/admin/books', bookData);
 };
