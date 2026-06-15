@@ -1,24 +1,37 @@
 import '../../pages/Home.css';
+import { BookPanelLayout } from '../shared/BookPanelLayout';
+import { MOCK_BOOKS } from '../../mocks/MockBook';
+import type { Book } from '../../types/Book';
 
-interface ManagementPanelProps {
-    onSelectBook: (bookName: string) => void;
-}
+export function ManagementPanel() {
 
-export function ManagementPanel({ onSelectBook }: ManagementPanelProps) {
+    const renderManagementActions = (book: Book) => (
+        <div className="management-actions-group">
+            <button
+                className="filter-button active edit-btn"
+                onClick={() => alert(`Modifier : ${book.title}`)}
+            >
+                Modifier
+            </button>
+            <button
+                className="filter-button active delete-btn"
+                onClick={() => alert(`Supprimer : ${book.title}`)}
+            >
+                Supprimer
+            </button>
+        </div>
+    );
+
     return (
-        <div>
-            <h2>Espace Gestion</h2>
-            <div className="placeholder-box" style={{ borderColor: '#4f46e5' }}>
+        <BookPanelLayout
+            title="Espace Gestion"
+            books={MOCK_BOOKS}
+            renderViewActions={renderManagementActions}
+        >
+            <div className="placeholder-box admin-zone">
                 <h3>[ Zone d'ajout d'un livre ]</h3>
                 <p>Formulaire pour ajouter un nouveau livre au catalogue.</p>
             </div>
-            <div className="placeholder-box">
-                [ Table de gestion du Catalogue ]
-                <br /><br />
-                <button onClick={() => onSelectBook("L'Étranger - Mode Édition")} className="filter-button active">
-                    Simuler la sélection d'un livre à modifier/supprimer
-                </button>
-            </div>
-        </div>
+        </BookPanelLayout>
     );
 }
