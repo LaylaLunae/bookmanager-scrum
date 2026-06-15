@@ -1,0 +1,158 @@
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #121214;
+    /* Fond sombre moderne */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #e1e1e6;
+    /* Texte clair mais doux pour les yeux */
+}
+
+.auth-card {
+    background-color: #202024;
+    /* Fond de carte légèrement plus clair */
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+
+.auth-title {
+    margin-top: 0;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+    text-align: center;
+    color: #ffffff;
+}
+
+.auth-form-group {
+    margin-bottom: 1.5rem;
+}
+
+.auth-button {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #4f46e5;
+    /* Violet/Indigo moderne */
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 1rem;
+}
+
+.auth-button:hover {
+    background-color: #4338ca;
+    /* Un peu plus sombre au survol */
+}
+
+.auth-switch-text {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #a8a8b3;
+}
+
+.auth-switch-text a {
+    color: #4f46e5;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-switch-text a:hover {
+    text-decoration: underline;
+}
+
+.auth-error-message {
+    color: #f75a68;
+    background-color: rgba(247, 90, 104, 0.1);
+    padding: 0.75rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid #f75a68;
+}
+
+.auth-card form {
+    width: 100%;
+}
+
+.auth-form-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.auth-form-group label {
+    font-size: 0.9rem;
+    color: #a8a8b3;
+    margin-bottom: 2rem;
+    font-weight: 500;
+}
+
+.auth-form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #121214;
+    border: 1px solid #29292e;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+}
+
+.auth-form-group input:focus {
+    outline: none;
+    border-color: #4f46e5;
+}
+
+
+.auth-form-group-checkbox {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+.auth-form-group-checkbox>div,
+.auth-form-group-checkbox {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.auth-form-group-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #4f46e5;
+    /* Violet moderne */
+    cursor: pointer;
+    margin: 0;
+    order: -1;
+}
+
+.auth-form-group-checkbox label {
+    font-size: 0.95rem;
+    color: #e1e1e6;
+    cursor: pointer;
+    margin: 0;
+    font-weight: 500;
+}
+
+.auth-form-group label.required-label::after {
+    content: " *" !important;
+    color: #f75a68 !important;
+    font-weight: bold !important;
+    display: inline-block !important;
+}
