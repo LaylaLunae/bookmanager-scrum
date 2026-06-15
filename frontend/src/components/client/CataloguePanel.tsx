@@ -1,21 +1,24 @@
 import '../../pages/Home.css';
+import { BookPanelLayout } from '../shared/BookPanelLayout';
+import { MOCK_BOOKS } from '../../mocks/MockBook';
+import type { Book } from '../../types/Book';
 
-interface CataloguePanelProps {
-    onSelectBook: (bookName: string) => void;
-}
+export function CataloguePanel() {
+    const renderCatalogueActions = (book: Book) => (
+        <button
+            className="filter-button active"
+            onClick={() => alert(`Ajout de "${book.title}" à ma bibliothèque`)}
+        >
+            Ajouter à mes livres
+        </button>
+    );
 
-export function CataloguePanel({ onSelectBook }: CataloguePanelProps) {
     return (
-        <div>
-            <h2>Catalogue Global</h2>
-            <p>Liste de tous les livres de la plateforme.</p>
-            <div className="placeholder-box">
-                [ Emplacement du futur catalogue ]
-                <br /><br />
-                <button onClick={() => onSelectBook("Le Seigneur des Anneaux")} className="filter-button active">
-                    Simuler la sélection d'un livre
-                </button>
-            </div>
-        </div>
+        <BookPanelLayout
+            title="Catalogue Global"
+            description="Liste de tous les livres de la plateforme."
+            books={MOCK_BOOKS}
+            renderViewActions={renderCatalogueActions}
+        />
     );
 }

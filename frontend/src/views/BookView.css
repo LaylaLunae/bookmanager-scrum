@@ -1,0 +1,80 @@
+.book-view-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.book-view-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+}
+
+.book-view-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 2px dashed #29292e;
+    border-radius: 8px;
+    padding: 2rem;
+    background-color: rgba(32, 32, 36, 0.3);
+}
+
+.book-view-cover {
+    width: 100%;
+    height: 220px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.book-view-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.book-view-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.book-genre-badge {
+    align-self: flex-start;
+    background-color: #4f46e5;
+    color: #ffffff;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.book-view-info h2 {
+    font-size: 1.5rem;
+    margin: 0 0 0.25rem 0;
+    color: #e1e1e6;
+}
+
+.book-author {
+    font-size: 0.85rem;
+    color: #a8a8b3;
+    margin: 0 0 1.5rem 0;
+}
+
+.book-view-info h3 {
+    font-size: 1rem;
+    margin: 0 0 0.5rem 0;
+    color: #e1e1e6;
+}
+
+.book-summary {
+    font-size: 0.85rem;
+    color: #a8a8b3;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.book-view-actions {
+    margin-top: 1.5rem;
+    width: 100%;
+}
