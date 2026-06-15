@@ -1,0 +1,53 @@
+.book-item-card {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    border: 2px dashed #29292e;
+    border-radius: 8px;
+    background-color: rgba(32, 32, 36, 0.3);
+    transition: border-color 0.2s ease;
+}
+
+.book-item-card:hover {
+    border-color: #4f46e5;
+}
+
+.book-item-card.selected {
+    border-color: #4f46e5;
+    background-color: rgba(79, 70, 229, 0.1);
+}
+
+/* Gestion de la couverture dans la grille */
+.book-item-card .book-view-cover {
+    width: 100%;
+    height: 180px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+}
+
+.book-item-card .book-view-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Ajustement du texte de la carte */
+.book-item-card .book-view-info h2 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    color: #e1e1e6;
+}
+
+.book-card-extra {
+    width: 100%;
+    margin-top: 0.5rem;
+}
