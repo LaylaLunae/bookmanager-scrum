@@ -1,12 +1,13 @@
 import '../../pages/Home.css';
 import { useState, useEffect, useRef } from 'react';
 import { BookPanelLayout, type BookPanelLayoutRef } from '../shared/BookPanelLayout';
-import { getMyLibrary, removeBookFromLibrary } from '../../services/libraryService';
+import { getMyLibrary, removeBookFromLibrary, updateBookStatus, type LibraryItem } from '../../services/libraryService';
 import type { Book } from '../../types/Book';
+import '../shared/BookGrid.css';
 
 export function MyBooksPanel() {
-    const [books, setBooks] = useState<Book[]>([]);
-    const [activeFilter, setActiveFilter] = useState<'all' | 'todo' | 'doing' | 'done'>('all');
+    const [libraryItems, setLibraryItems] = useState<LibraryItem[]>([]);
+    const [activeFilter, setActiveFilter] = useState<'all' | 'A lire' | 'En cours' | 'Lu'>('all');
     const [loading, setLoading] = useState<boolean>(true);
 
     const layoutRef = useRef<BookPanelLayoutRef>(null);
@@ -14,8 +15,7 @@ export function MyBooksPanel() {
     const fetchLibrary = () => {
         getMyLibrary()
             .then((response) => {
-                const extractedBooks = response.data.map(item => item.book);
-                setBooks(extractedBooks);
+                setLibraryItems(response.data);
                 setLoading(false);
             })
             .catch((err) => {
@@ -32,9 +32,7 @@ export function MyBooksPanel() {
         if (window.confirm(`Voulez-vous vraiment retirer "${book.title}" de votre bibliothèque ?`)) {
             try {
                 await removeBookFromLibrary(book.id);
-
                 layoutRef.current?.closeSidebar();
-
                 fetchLibrary();
             } catch (err) {
                 console.error("Erreur lors de la suppression du livre :", err);
@@ -43,15 +41,53 @@ export function MyBooksPanel() {
         }
     };
 
+    const handleStatusChange = async (bookId: number, newStatus: "A lire" | "En cours" | "Lu") => {
+        try {
+            await updateBookStatus(bookId, newStatus);
 
-    const renderMyBooksActions = (book: Book) => (
-        <button
-            className="filter-button active delete-btn"
-            onClick={() => handleRemoveBook(book)}
-        >
-            Supprimer de ma bibliothèque
-        </button>
-    );
+            setLibraryItems((prevItems) =>
+                prevItems.map((item) =>
+                    item.book.id === bookId ? { ...item, status: newStatus } : item
+                )
+            );
+        } catch (err) {
+            console.error("Erreur lors de la mise à jour du statut :", err);
+            alert("Impossible de mettre à jour le statut.");
+        }
+    };
+
+    const filteredItems = libraryItems.filter(item => {
+        if (activeFilter === 'all') return true;
+        return item.status === activeFilter;
+    });
+
+    const booksToDisplay = filteredItems.map(item => item.book);
+
+    const renderMyBooksActions = (book: Book) => {
+        const currentItem = libraryItems.find(item => item.book.id === book.id);
+        const currentStatus = currentItem ? currentItem.status : "A lire";
+
+        return (
+            <div className="library-actions-row">
+                <select
+                    value={currentStatus}
+                    onChange={(e) => handleStatusChange(book.id, e.target.value as "A lire" | "En cours" | "Lu")}
+                    className="filter-button active status-select-dropdown"
+                >
+                    <option value="A lire">À lire</option>
+                    <option value="En cours">En cours</option>
+                    <option value="Lu">Lu</option>
+                </select>
+
+                <button
+                    className="filter-button active delete-btn"
+                    onClick={() => handleRemoveBook(book)}
+                >
+                    Supprimer
+                </button>
+            </div>
+        );
+    };
 
     if (loading) {
         return (
@@ -68,18 +104,19 @@ export function MyBooksPanel() {
         <BookPanelLayout
             ref={layoutRef}
             title="Mes Livres"
-            books={books}
+            books={booksToDisplay}
             renderViewActions={renderMyBooksActions}
         >
             <div className="filter-bar">
                 <button className={`filter-button ${activeFilter === 'all' ? 'active' : ''}`} onClick={() => setActiveFilter('all')}>Tous mes livres</button>
-                <button className={`filter-button ${activeFilter === 'todo' ? 'active' : ''}`} onClick={() => setActiveFilter('todo')}>À lire</button>
-                <button className={`filter-button ${activeFilter === 'doing' ? 'active' : ''}`} onClick={() => setActiveFilter('doing')}>En cours</button>
-                <button className={`filter-button ${activeFilter === 'done' ? 'active' : ''}`} onClick={() => setActiveFilter('done')}>Lus</button>
+                <button className={`filter-button ${activeFilter === 'A lire' ? 'active' : ''}`} onClick={() => setActiveFilter('A lire')}>À lire</button>
+                <button className={`filter-button ${activeFilter === 'En cours' ? 'active' : ''}`} onClick={() => setActiveFilter('En cours')}>En cours</button>
+                <button className={`filter-button ${activeFilter === 'Lu' ? 'active' : ''}`} onClick={() => setActiveFilter('Lu')}>Lus</button>
             </div>
-            {books.length === 0 && (
+
+            {booksToDisplay.length === 0 && (
                 <div className="no-books-message">
-                    <p>Vous n'avez pas de livres pour le moment. Ajoutez-en depuis le catalogue.</p>
+                    <p>Aucun livre ne correspond à ce filtre.</p>
                 </div>
             )}
         </BookPanelLayout>
