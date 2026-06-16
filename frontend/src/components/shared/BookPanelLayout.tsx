@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import type { ReactNode } from "react";
 import type { Book } from "../../types/Book";
 import { BookGrid } from "./BookGrid";
@@ -12,18 +12,36 @@ interface BookPanelLayoutProps {
     renderCardExtra?: (book: Book) => ReactNode;
     renderViewActions?: (book: Book) => ReactNode;
     children?: ReactNode;
+    adminSidebarContent?: ReactNode;
 }
 
-export function BookPanelLayout({
+export interface BookPanelLayoutRef {
+    closeSidebar: () => void;
+}
+
+export const BookPanelLayout = forwardRef<BookPanelLayoutRef, BookPanelLayoutProps>(({
     title,
     description,
     books,
     renderCardExtra,
     renderViewActions,
-    children
-}: BookPanelLayoutProps) {
+    children,
+    adminSidebarContent
+}, ref) => {
 
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+
+    useImperativeHandle(ref, () => ({
+        closeSidebar() {
+            setSelectedBook(null);
+        }
+    }));
+
+    useEffect(() => {
+        if (adminSidebarContent) {
+            setSelectedBook(null);
+        }
+    }, [adminSidebarContent]);
 
     return (
         <div className="catalogue-layout">
@@ -42,16 +60,24 @@ export function BookPanelLayout({
                 />
             </div>
 
-            {selectedBook && (
+            {(adminSidebarContent || selectedBook) && (
                 <div className="catalogue-sidebar">
-                    <BookView
-                        book={selectedBook}
-                        onClose={() => setSelectedBook(null)}
-                        actions={renderViewActions ? renderViewActions(selectedBook) : undefined}
-                    />
+                    {adminSidebarContent ? (
+                        adminSidebarContent
+                    ) : (
+                        selectedBook && (
+                            <BookView
+                                book={selectedBook}
+                                onClose={() => setSelectedBook(null)}
+                                actions={renderViewActions ? renderViewActions(selectedBook) : undefined}
+                            />
+                        )
+                    )}
                 </div>
             )}
 
         </div>
     );
-}
+});
+
+BookPanelLayout.displayName = "BookPanelLayout";

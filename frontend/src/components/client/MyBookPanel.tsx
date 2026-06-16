@@ -7,7 +7,6 @@ import type { Book } from '../../types/Book';
 export function MyBooksPanel() {
     const [activeFilter, setActiveFilter] = useState<'all' | 'todo' | 'doing' | 'done'>('all');
 
-    // simulation de filtrage (à adapter plus tard selon tes vraies données utilisateur)
     const filteredBooks = MOCK_BOOKS;
 
     const renderMyBooksActions = (book: Book) => (

@@ -9,6 +9,7 @@ services:
       - "8080:8080"
     volumes:
       - h2-data:/app/data
+      - ./backend/uploads:/app/uploads
     environment:
       - SPRING_DATASOURCE_URL=jdbc:h2:file:/app/data/mydb
       - SPRING_MVC_CORS_ALLOWED_ORIGIN_PATTERNS=*

@@ -15,6 +15,12 @@ export function BookView({ book, onClose, actions }: BookViewProps) {
                 <button onClick={onClose} className="filter-button">
                     ✕ Fermer
                 </button>
+
+                {actions && (
+                    <div className="book-view-header-actions">
+                        {actions}
+                    </div>
+                )}
             </div>
 
             <div className="book-view-content">
@@ -31,12 +37,6 @@ export function BookView({ book, onClose, actions }: BookViewProps) {
                     <p className="book-summary">{book.summary}</p>
                 </div>
             </div>
-
-            {actions && (
-                <div className="book-view-actions">
-                    {actions}
-                </div>
-            )}
         </div>
     );
 }
