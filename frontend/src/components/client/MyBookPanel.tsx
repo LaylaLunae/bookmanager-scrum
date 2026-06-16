@@ -1,7 +1,7 @@
 import '../../pages/Home.css';
-import { useState, useEffect } from 'react';
-import { BookPanelLayout } from '../shared/BookPanelLayout';
-import { getMyLibrary } from '../../services/libraryService';
+import { useState, useEffect, useRef } from 'react';
+import { BookPanelLayout, type BookPanelLayoutRef } from '../shared/BookPanelLayout';
+import { getMyLibrary, removeBookFromLibrary } from '../../services/libraryService';
 import type { Book } from '../../types/Book';
 
 export function MyBooksPanel() {
@@ -9,7 +9,9 @@ export function MyBooksPanel() {
     const [activeFilter, setActiveFilter] = useState<'all' | 'todo' | 'doing' | 'done'>('all');
     const [loading, setLoading] = useState<boolean>(true);
 
-    useEffect(() => {
+    const layoutRef = useRef<BookPanelLayoutRef>(null);
+
+    const fetchLibrary = () => {
         getMyLibrary()
             .then((response) => {
                 const extractedBooks = response.data.map(item => item.book);
@@ -20,11 +22,34 @@ export function MyBooksPanel() {
                 console.error("Erreur chargement bibliothèque perso :", err);
                 setLoading(false);
             });
+    };
+
+    useEffect(() => {
+        fetchLibrary();
     }, []);
 
+    const handleRemoveBook = async (book: Book) => {
+        if (window.confirm(`Voulez-vous vraiment retirer "${book.title}" de votre bibliothèque ?`)) {
+            try {
+                await removeBookFromLibrary(book.id);
+
+                layoutRef.current?.closeSidebar();
+
+                fetchLibrary();
+            } catch (err) {
+                console.error("Erreur lors de la suppression du livre :", err);
+                alert("Impossible de supprimer le livre pour le moment.");
+            }
+        }
+    };
+
+
     const renderMyBooksActions = (book: Book) => (
-        <button className="filter-button active">
-            Action sur {book.title}
+        <button
+            className="filter-button active delete-btn"
+            onClick={() => handleRemoveBook(book)}
+        >
+            Supprimer de ma bibliothèque
         </button>
     );
 
@@ -41,6 +66,7 @@ export function MyBooksPanel() {
 
     return (
         <BookPanelLayout
+            ref={layoutRef}
             title="Mes Livres"
             books={books}
             renderViewActions={renderMyBooksActions}

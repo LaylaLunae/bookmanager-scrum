@@ -27,3 +27,8 @@ export const addBookToLibrary = (bookId: number, userId?: number) => {
 export const updateBookStatus = (bookId: number, status: "A lire" | "En cours" | "Lu", userId?: number) => {
     return api.patch<void>(`/client/library/${bookId}/tag`, { status }, getAuthHeaders(userId));
 };
+
+// Supprimer un livre de sa bibliothèque
+export const removeBookFromLibrary = (bookId: number, userId?: number) => {
+    return api.delete(`/client/library/${bookId}`, getAuthHeaders(userId));
+};
