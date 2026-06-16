@@ -3,11 +3,13 @@ import '../../pages/Home.css';
 import { BookPanelLayout } from '../shared/BookPanelLayout';
 import { getAllBooks } from '../../services/bookService';
 import type { Book } from '../../types/Book';
+import { addBookToLibrary } from '../../services/libraryService';
 
 export function CataloguePanel() {
     const [books, setBooks] = useState<Book[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [addedBookIds, setAddedBookIds] = useState<number[]>([]);
 
     useEffect(() => {
         getAllBooks()
@@ -22,15 +24,34 @@ export function CataloguePanel() {
             });
     }, []);
 
-    // Action de la sidebar
-    const renderCatalogueActions = (book: Book) => (
-        <button
-            className="filter-button active"
-            onClick={() => alert(`Ajout de "${book.title}" à ma bibliothèque (Story à venir)`)}
-        >
-            Ajouter à mes livres
-        </button>
-    );
+    const handleAddToLibrary = async (bookId: number) => {
+        try {
+            await addBookToLibrary(bookId);
+            setAddedBookIds((prev) => [...prev, bookId]);
+        } catch (err: any) {
+            if (err.response && err.response.status === 400) {
+                alert("Ce livre est déjà dans votre bibliothèque !");
+                setAddedBookIds((prev) => [...prev, bookId]);
+            } else {
+                console.error("Erreur ajout bibliothèque:", err);
+                alert("Une erreur est survenue lors de l'ajout.");
+            }
+        }
+    };
+
+    const renderCatalogueActions = (book: Book) => {
+        const isAdded = addedBookIds.includes(book.id);
+
+        return (
+            <button
+                className={`filter-button ${isAdded ? 'btn-added' : 'active'}`}
+                onClick={() => handleAddToLibrary(book.id)}
+                disabled={isAdded}
+            >
+                {isAdded ? 'Ajouté' : 'Ajouter à mes livres'}
+            </button>
+        );
+    };
 
     if (loading) {
         return (
@@ -48,7 +69,7 @@ export function CataloguePanel() {
             <div className="catalogue-layout">
                 <div className="catalogue-main">
                     <h2>Catalogue</h2>
-                    <p style={{ color: '#f75a68' }}>{error}</p>
+                    <p className="catalogue-error-text">{error}</p>
                 </div>
             </div>
         );

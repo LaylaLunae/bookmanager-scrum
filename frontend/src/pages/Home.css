@@ -70,3 +70,15 @@
     margin-top: 1rem;
     background-color: rgba(32, 32, 36, 0.3);
 }
+
+.catalogue-error-text {
+    color: #f75a68;
+}
+
+.filter-button.btn-added {
+    background-color: #10b981 !important;
+    color: #ffffff !important;
+    border-color: #10b981 !important;
+    cursor: not-allowed;
+    opacity: 0.9;
+}
