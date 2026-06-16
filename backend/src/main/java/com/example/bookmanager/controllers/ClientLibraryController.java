@@ -50,4 +50,15 @@ public class ClientLibraryController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
+    // Supprimer un livre de sa bibliothèque personnelle
+    @DeleteMapping("/{bookId}")
+    public ResponseEntity<?> removeFromLibrary(@RequestHeader("X-User-Id") Long userId, @PathVariable Long bookId) {
+        try {
+            libraryService.removeBookFromLibrary(userId, bookId);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 }

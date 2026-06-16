@@ -60,4 +60,12 @@ public class ClientLibraryService {
         userBook.setStatus(newStatus);
         return userBookRepository.save(userBook);
     }
+
+    // Supprimer un livre de sa bibliothèque
+    public void removeBookFromLibrary(Long userId, Long bookId) {
+        UserBook userBook = userBookRepository.findByUserIdAndBookId(userId, bookId)
+                .orElseThrow(() -> new RuntimeException("Ce livre ne fait pas partie de votre bibliothèque"));
+
+        userBookRepository.delete(userBook);
+    }
 }

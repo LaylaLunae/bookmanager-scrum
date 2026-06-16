@@ -70,3 +70,38 @@
     margin-top: 1rem;
     background-color: rgba(32, 32, 36, 0.3);
 }
+
+.catalogue-error-text {
+    color: #f75a68;
+}
+
+.filter-button.btn-added {
+    background-color: #10b981 !important;
+    color: #ffffff !important;
+    border-color: #10b981 !important;
+    cursor: not-allowed;
+    opacity: 0.9;
+}
+
+/* Conteneur pour aligner le sélecteur et le bouton de suppression sur la même ligne */
+.library-actions-row {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    align-items: center;
+}
+
+/* Ajustement pour que le select prenne la même forme que les boutons filter-button */
+.status-select-dropdown {
+    flex: 1;
+    padding: 0px 15px;
+    height: 38px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* Forcer le bouton de suppression à ne pas s'effondrer en largeur */
+.library-actions-row .delete-btn {
+    flex: 1;
+    margin: 0;
+}
