@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import type { ReactNode } from "react";
 import type { Book } from "../../types/Book";
 import { BookGrid } from "./BookGrid";
@@ -15,7 +15,11 @@ interface BookPanelLayoutProps {
     adminSidebarContent?: ReactNode;
 }
 
-export function BookPanelLayout({
+export interface BookPanelLayoutRef {
+    closeSidebar: () => void;
+}
+
+export const BookPanelLayout = forwardRef<BookPanelLayoutRef, BookPanelLayoutProps>(({
     title,
     description,
     books,
@@ -23,9 +27,15 @@ export function BookPanelLayout({
     renderViewActions,
     children,
     adminSidebarContent
-}: BookPanelLayoutProps) {
+}, ref) => {
 
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+
+    useImperativeHandle(ref, () => ({
+        closeSidebar() {
+            setSelectedBook(null);
+        }
+    }));
 
     useEffect(() => {
         if (adminSidebarContent) {
@@ -68,4 +78,6 @@ export function BookPanelLayout({
 
         </div>
     );
-}
+});
+
+BookPanelLayout.displayName = "BookPanelLayout";

@@ -1,0 +1,35 @@
+/* Espacement pour le bouton "Ajouter un livre" au-dessus de la grille */
+.management-add-button-wrapper {
+    margin: 1.5rem 0;
+}
+
+/* Alignement des boutons Modifier et Supprimer dans le header de la vue */
+.management-actions-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Style de base pour le bouton Supprimer */
+.management-actions-group .delete-btn {
+    background-color: #e51c44 !important;
+    border: none !important;
+}
+
+.management-actions-group .delete-btn:hover {
+    background-color: #b81433 !important;
+}
+
+/* MODIFICATION DU CONTOUR AU CLIC / FOCUS POUR LE BOUTON SUPPRIMER */
+.management-actions-group .delete-btn:focus,
+.management-actions-group .delete-btn:focus-visible {
+    outline: 2px solid #ff4d6d !important;
+    outline-offset: 2px;
+}
+
+/* Sécurité pour le bouton modifier si tu veux aussi changer son contour bleu par sa couleur d'accentuation */
+.management-actions-group .edit-btn:focus,
+.management-actions-group .edit-btn:focus-visible {
+    outline: 2px solid #4f46e5 !important;
+    /* Un contour violet/bleu nuit assorti à ton bouton actif */
+    outline-offset: 2px;
+}

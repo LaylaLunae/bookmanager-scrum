@@ -1,30 +1,44 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { InputField } from '../shared/InputField';
-import { createBook } from '../../services/bookService';
-import './AddBookForm.css';
+import { createBook, updateBook } from '../../services/bookService';
+import type { Book } from '../../types/Book';
+import './BookForm.css';
 
-interface AddBookFormProps {
-    onBookAdded: () => void;
+interface BookFormProps {
+    bookToEdit?: Book | null;
+    existingBooks: Book[];
+    onSuccess: () => void;
     onCancel: () => void;
 }
 
-export function AddBookForm({ onBookAdded, onCancel }: AddBookFormProps) {
+export function BookForm({ bookToEdit, existingBooks, onSuccess, onCancel }: BookFormProps) {
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
     const [genre, setGenre] = useState('');
     const [summary, setSummary] = useState('');
-
     const [coverName, setCoverName] = useState('');
     const [previewUrl, setPreviewUrl] = useState('');
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    useEffect(() => {
+        if (bookToEdit) {
+            setTitle(bookToEdit.title);
+            setAuthor(bookToEdit.author);
+            setGenre(bookToEdit.genre);
+            setSummary(bookToEdit.summary);
+            setPreviewUrl(bookToEdit.cover);
+
+            const parts = bookToEdit.cover.split('/');
+            setCoverName(parts[parts.length - 1] || 'Image actuelle');
+        }
+    }, [bookToEdit]);
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             const file = e.target.files[0];
             setCoverName(file.name);
-
             setPreviewUrl(URL.createObjectURL(file));
         }
     };
@@ -33,40 +47,50 @@ export function AddBookForm({ onBookAdded, onCancel }: AddBookFormProps) {
         e.preventDefault();
         setErrorMessage('');
 
-        if (!title.trim() || !author.trim() || !genre.trim() || !summary.trim() || !coverName) {
+        if (!title.trim() || !author.trim() || !genre.trim() || !summary.trim() || !previewUrl) {
             setErrorMessage("Veuillez remplir tous les champs !");
             return;
         }
 
+        if (!bookToEdit) {
+            const isDuplicate = existingBooks.some(
+                (b) => b.title.toLowerCase().trim() === title.toLowerCase().trim()
+            );
+            if (isDuplicate) {
+                setErrorMessage("Ce livre existe déjà dans votre catalogue !");
+                return;
+            }
+        }
+
         setIsSubmitting(true);
 
-        const shortCoverUrl = `http://localhost:8080/uploads/${coverName}`;
+        const finalCoverUrl = coverName && !coverName.includes('Image actuelle')
+            ? `http://localhost:8080/uploads/${coverName}`
+            : previewUrl;
 
         const bookPayload = {
-            title,
-            author,
-            genre,
-            summary,
-            cover: shortCoverUrl
+            title: title.trim(),
+            author: author.trim(),
+            genre: genre.trim(),
+            summary: summary.trim(),
+            cover: finalCoverUrl
         };
 
         try {
-            await createBook(bookPayload);
+            if (bookToEdit) {
+                await updateBook(bookToEdit.id, bookPayload);
+            } else {
+                await createBook(bookPayload);
+            }
 
-            setTitle('');
-            setAuthor('');
-            setGenre('');
-            setSummary('');
-            setCoverName('');
-            setPreviewUrl('');
             setIsSubmitting(false);
-            onBookAdded();
+            onSuccess();
         } catch (error: any) {
             setIsSubmitting(false);
             if (error.response && error.response.data) {
-                setErrorMessage(typeof error.response.data === 'string' ? error.response.data : "Erreur de validation de l'API.");
+                setErrorMessage(typeof error.response.data === 'string' ? error.response.data : "Erreur serveur.");
             } else {
-                setErrorMessage("Une erreur est survenue lors de l'ajout du livre.");
+                setErrorMessage("Une erreur est survenue lors de l'enregistrement.");
             }
         }
     };
@@ -74,8 +98,8 @@ export function AddBookForm({ onBookAdded, onCancel }: AddBookFormProps) {
     return (
         <form onSubmit={handleSubmit} className="add-book-form-container">
             <div className="form-fixed-header">
-                <h3>Nouveau livre</h3>
-                <div className="form-actions">
+                <h3>{bookToEdit ? 'Modifier le livre' : 'Nouveau livre'}</h3>
+                <div className="form-actions" style={{ display: 'flex', gap: '0.5rem' }}>
                     <button type="button" className="filter-button" onClick={onCancel} disabled={isSubmitting}>
                         Annuler
                     </button>
@@ -85,8 +109,8 @@ export function AddBookForm({ onBookAdded, onCancel }: AddBookFormProps) {
                 </div>
             </div>
 
-            <div className="form-scrollable-body">
-                {errorMessage && <p className="auth-error-message">{errorMessage}</p>}
+            <div className="form-scrollable-body" style={{ paddingBottom: '2.5rem' }}>
+                {errorMessage && <p className="auth-error-message" style={{ color: '#e51c44' }}>{errorMessage}</p>}
 
                 <div className="auth-form-group">
                     <InputField
@@ -110,7 +134,7 @@ export function AddBookForm({ onBookAdded, onCancel }: AddBookFormProps) {
 
                 <div className="auth-form-group">
                     <InputField
-                        label="Genre (ex: fantasy, policier...)"
+                        label="Genre (ex: Shonen, Fantasy...)"
                         type="text"
                         value={genre}
                         onChange={(e) => setGenre(e.target.value)}
@@ -131,7 +155,7 @@ export function AddBookForm({ onBookAdded, onCancel }: AddBookFormProps) {
                         <label htmlFor="file-upload" className="file-upload-button">
                             {coverName ? "Modifier l'image" : "Choisir un fichier"}
                         </label>
-                        {coverName && <span className="file-name-indicator" style={{ color: '#7c7c8a', fontSize: '0.85rem' }}>{coverName}</span>}
+                        {coverName && <span className="file-name-indicator" style={{ color: '#7c7c8a', fontSize: '0.85rem', marginLeft: '0.5rem' }}>{coverName}</span>}
                     </div>
 
                     {previewUrl && (
@@ -152,6 +176,7 @@ export function AddBookForm({ onBookAdded, onCancel }: AddBookFormProps) {
                         value={summary}
                         onChange={(e) => setSummary(e.target.value)}
                         required
+                        style={{ width: '100%', background: '#1c1c1f', border: '1px solid #29292e', borderRadius: '4px', color: '#fff', padding: '0.5rem', resize: 'vertical' }}
                     />
                 </div>
             </div>
